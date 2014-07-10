@@ -122,7 +122,7 @@ extern int __get_user_4(void *);
 	({								\
 		unsigned long __limit = current_thread_info()->addr_limit - 1; \
 		register const typeof(*(p)) __user *__p asm("r0") = (p);\
-		register unsigned long __r2 asm("r2");			\
+		register typeof(x) __r2 asm("r2");			\
 		register unsigned long __l asm("r1") = __limit;		\
 		register int __e asm("r0");				\
 		switch (sizeof(*(__p))) {				\
@@ -140,6 +140,14 @@ extern int __get_user_4(void *);
 		x = (typeof(*(p))) __r2;				\
 		__e;							\
 	})
+
+/* narrowing a double-word get into a single 32bit word register: */
+#ifdef __ARMEB__
+#define __get_user_xb(__r2, __p, __e, __l, __s)				\
+	__get_user_x(__r2, __p, __e, __l, lo8)
+#else
+#define __get_user_xb __get_user_x
+#endif
 
 #define get_user(x,p)							\
 	({								\
