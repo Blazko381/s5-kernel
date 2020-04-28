@@ -2162,7 +2162,6 @@ static int rt_fill_info(struct net *net,  __be32 dst, __be32 src,
 	struct rtable *rt = skb_rtable(skb);
 	struct rtmsg *r;
 	struct nlmsghdr *nlh;
-	struct flowi4 *fl4 = &(inet_sk(skb->sk))->cork.fl.u.ip4;
 	unsigned long expires = 0;
 	u32 error;
 	u32 metrics[RTAX_MAX];
